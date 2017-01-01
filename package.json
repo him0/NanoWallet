@@ -25,9 +25,11 @@
   },
   "scripts": {
     "start": "electron build/app.js",
-    "package": "electron-packager . NanoWallet --overwrite",
-    "package-mac": "electron-packager . NanoWallet --platform=darwin --overwrite --icon=build/images/logomark.png",
-    "package-windows": "electron-packager . NanoWallet --platform=win32 --overwrite --icon=build/images/logomark.ico",
+    "package-mac": "electron-packager . --overwrite --asar=true --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
+    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=x64 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"NanoWallet\"",
+    "package-linux": "electron-packager . --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds",
+    "create-installer-mac": "electron-installer-dmg ./release-builds/NanoWallet-darwin-x64/NanoWallet.app NanoWallet --out=release-builds --overwrite --icon=assets/icons/mac/icon.icns",
+    "create-installer-win": "node installers/windows/createinstaller.js",
     "test": "gulp tests browserifyTests"
   },
   "repository": {
@@ -49,7 +51,9 @@
     "browserify": "^13.0.0",
     "browserify-ngannotate": "^2.0.0",
     "electron": "^1.4.13",
+    "electron-installer-dmg": "^0.2.0",
     "electron-packager": "^8.4.0",
+    "electron-winstaller": "^2.5.1",
     "glob": "^7.1.1",
     "gulp": "^3.9.1",
     "gulp-angular-templatecache": "^1.8.0",
