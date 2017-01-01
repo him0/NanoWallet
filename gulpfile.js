@@ -64,6 +64,12 @@ gulp.task('html', function() {
       .pipe(gulp.dest('./build/'));
 });
 
+gulp.task('electron', function() {
+  return gulp.src("src/electron.js")
+      .on('error', interceptErrors)
+      .pipe(gulp.dest('./build/'));
+});
+
 gulp.task('tests', function() {
   return gulp.src("tests/start.html")
       .on('error', interceptErrors)
@@ -113,7 +119,7 @@ gulp.task('views', function() {
 });*/
 
 // Run Tasks
-gulp.task('default', ['html', 'js', 'css', 'images', 'browserify', 'tests', 'browserifyTests'], function() { 
+gulp.task('default', ['html', 'electron', 'js', 'css', 'images', 'browserify', 'tests', 'browserifyTests'], function() {
 
   // Uncomment below for dev mode (watch and build as you change the code)
     // browserSync.init(['./build/**/**.**'], {
@@ -127,5 +133,5 @@ gulp.task('default', ['html', 'js', 'css', 'images', 'browserify', 'tests', 'bro
   gulp.watch("src/index.html", ['html']);
   gulp.watch(viewFiles, ['views']);
   gulp.watch(jsFiles, ['browserify']);*/
-  
+
 });
