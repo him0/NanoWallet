@@ -1,4 +1,4 @@
-# Nano Wallet #
+# Nano Wallet (Electron Application Branch) #
 
 ### How to use Nano Wallet ? ###
 
