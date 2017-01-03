@@ -25,12 +25,26 @@
   },
   "scripts": {
     "start": "electron build/app.js",
-    "package-mac": "electron-packager . --overwrite --asar=true --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds",
-    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=x64 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"NanoWallet\"",
-    "package-linux": "electron-packager . --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/png/1024x1024.png --prune=true --out=release-builds",
-    "create-installer-mac": "electron-installer-dmg ./release-builds/NanoWallet-darwin-x64/NanoWallet.app NanoWallet --out=release-builds --overwrite --icon=assets/icons/mac/icon.icns",
-    "create-installer-win": "node installers/windows/createinstaller.js",
-    "test": "gulp tests browserifyTests"
+    "test": "gulp tests browserifyTests",
+
+    "clean": "rm -rf ./dist/* && touch ./dist/.gitkeep",
+    "clean:osx": "rm -rf ./dist/osx",
+    "clean:win": "rm -rf ./dist/win",
+    "clean:linux": "rm -rf ./dist/linux",
+
+    "pack": "npm run pack:osx && npm run pack:win && npm run pack:linux",
+    "pack:osx": "electron-packager . NanoWallet --out=dist/osx --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --overwrite",
+    "pack:win": "electron-packager . NanoWallet --out=dist/win --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --overwrite",
+    "pack:linux": "electron-packager . NanoWallet --out=dist/linux --platform=linux --arch=ia32 --icon=assets/icons/win/icon.ico --overwrite",
+
+    "build": "npm run build:osx && npm run build:win",
+    "build:osx": "rm -rf dist/osx/NanoWallet.dmg && electron-builder dist/osx/NanoWallet-darwin-x64/NanoWallet.app --platform=osx --out=dist/osx --config=builder.json",
+    "build:win": "rm -rf 'dist/win/NanoWallet Setup.exe' && electron-builder dist/win/NanoWallet-win32-ia32 --platform=win --out=dist/win --config=builder.json",
+
+    "archive": "npm run archive:osx && npm run archive:win && npm run archive:linux",
+    "archive:osx": "rm -rf dist/osx/NanoWallet-darwin-x64.zip && zip -r dist/osx/NanoWallet-darwin-x64.zip dist/osx/NanoWallet-darwin-x64",
+    "archive:win": "rm -rf dist/win/NanoWallet-win32.zip && zip -r dist/win/NanoWallet-win32.zip dist/win/NanoWallet-win32-ia32",
+    "archive:linux": "rm -rf dist/linux/NanoWallet-linux-ia32.zip && zip -r dist/linux/NanoWallet-linux-ia32 dist/linux/NanoWallet-linux-ia32"
   },
   "repository": {
     "type": "git",
@@ -51,9 +65,8 @@
     "browserify": "^13.0.0",
     "browserify-ngannotate": "^2.0.0",
     "electron": "^1.4.13",
-    "electron-installer-dmg": "^0.2.0",
+    "electron-builder": "^2.5.0",
     "electron-packager": "^8.4.0",
-    "electron-winstaller": "^2.5.1",
     "glob": "^7.1.1",
     "gulp": "^3.9.1",
     "gulp-angular-templatecache": "^1.8.0",
