@@ -49,5 +49,5 @@ jspm_packages
 *.tgz
 
 # Release Builds
-dist/*
-!.gitkeep
+dist
+!dist/.gitkeep
